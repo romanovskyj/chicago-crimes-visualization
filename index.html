@@ -1,27 +1,64 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<body id="myPage">
+<head>
+  <title>Chicago Crimes Analysis</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="assets/styles/chart.css">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/bar.js"></script>
+  <body id="myPage">
+</head>
 
 <!-- Image Header -->
 <div class="w3-display-container w3-animate-opacity">
-  <img src="/images/header_background.jpg" alt="boat" style="width:100%;min-height:350px;max-height:600px;">
+  <img src="assets/images/header_background.jpg" alt="boat" style="width:100%;min-height:350px;max-height:600px;">
   <div class="w3-container w3-display-bottomleft w3-margin-bottom">  
     <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-xlarge w3-theme w3-hover-teal" title="Go To W3.CSS">CHICAGO CRIMES ANALYSIS</button>
   </div>
 </div>
 
-<!-- Team Container -->
-<div class="w3-container w3-padding-64 w3-center" id="team">
+<div class="w3-container w3-padding-64 w3-left" >
   <h2>NUMBER OF CRIMES BY DIFFERENT YEARS</h2>
   <p>Below you can explore the bar chart that represents yearly crimes for each year</p>
 </div>
+
+<div class="w3-row-padding">
+  <div style="width:490px; float: left;">
+    <div class="w3-container" id="year-chart"></div>
+  </div>
+  <div>
+    <label for="checkbox-arrested">Arrested Only</label>
+    <input type="checkbox" id="checkbox-arrested">
+  </div>
+</div>
+
+<script>
+  let arrested_only = false;
+  $(() => {
+    $("input").checkboxradio({
+      icon: false
+    });
+    $("#checkbox-arrested").on("click", function() {
+      if (arrested_only) {
+        arrested_only = false;
+        draw(arrested_only=false)
+      } else {
+        arrested_only = true;
+        draw(arrested_only=true)
+      }
+    });
+  });
+
+  draw();
+</script>
 
 <!-- Footer -->
 <footer class="w3-container w3-padding-32 w3-theme-d1 w3-center">
