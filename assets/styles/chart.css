@@ -8,3 +8,20 @@
     stroke: #000;
     shape-rendering: crispEdges;
 }
+
+.chart-container {
+    width:490px; 
+    float: left;
+}
+
+.select-crime {
+    width: 300px;
+    float: left;
+}
+.chart-categories {
+    width: 500px; 
+    float: left;
+}
+.overflow {
+    height: 200px;
+}

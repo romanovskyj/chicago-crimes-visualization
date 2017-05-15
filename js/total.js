@@ -1,5 +1,5 @@
-draw = (arrested_filter=false) => {
-  const y_variable = (arrested_filter) ? 'arrested' : 'total';
+drawTotal = (arrestedFilter=false) => {
+  const yVariable = (arrestedFilter) ? 'arrested' : 'total';
 
   let margin = { top: 0, right: 20, bottom: 70, left:100 };
   let width = 500 - margin.left - margin.right;
@@ -19,21 +19,23 @@ draw = (arrested_filter=false) => {
     .scale(y)
     .orient('left')
     .ticks(10);
-  d3.select("svg").remove();
+
+  d3.select("#svg-total").remove();
   let svg = d3.select('#year-chart')
     .append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
+    .attr('id', 'svg-total')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-  d3.csv('chicago_crimes_parsed.csv', (error, data) => {
+  d3.csv('data/chicago_crimes_parsed.csv', (error, data) => {
     data.forEach((row) => {
       row.year = parseDate(row.year);
     });
 
     x.domain(data.map((row) => row.year));
-    y.domain([0, d3.max(data, (row) => row[y_variable])]);
+    y.domain([0, d3.max(data, (row) => row[yVariable])]);
 
     svg.append('g')
       .attr('class', 'x axis')
@@ -52,8 +54,7 @@ draw = (arrested_filter=false) => {
         .attr('transform', 'rotate(-90)')
         .attr('y', 6)
         .attr('dy', '.71em')
-        .style('text-anchor', 'end')
-        .text('Value ($)');
+        .style('text-anchor', 'end');
 
     svg.selectAll('bar')
         .data(data)
@@ -61,7 +62,7 @@ draw = (arrested_filter=false) => {
         .style('fill', 'steelblue')
         .attr('x', (row) => x(row.year))
         .attr('width', x.rangeBand())
-        .attr('y', (bar_element) => y(bar_element[y_variable]))
-        .attr('height', function(d) { return height - y(d[y_variable]); });
+        .attr('y', (barElement) => y(barElement[yVariable]))
+        .attr('height', function(d) { return height - y(d[yVariable]); });
   });
 }

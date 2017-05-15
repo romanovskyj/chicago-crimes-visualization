@@ -13,9 +13,12 @@
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script type="text/javascript" src="js/bar.js"></script>
-  <body id="myPage">
+  <script type="text/javascript" src="js/total.js"></script>
+  <script type="text/javascript" src="js/categories.js"></script>
+  <script src="js/lodash.js"></script>
 </head>
+
+<body id="myPage">
 
 <!-- Image Header -->
 <div class="w3-display-container w3-animate-opacity">
@@ -27,11 +30,11 @@
 
 <div class="w3-container w3-padding-64 w3-left" >
   <h2>NUMBER OF CRIMES BY DIFFERENT YEARS</h2>
-  <p>Below you can explore the bar chart that represents yearly crimes for each year</p>
+  <p>Below you can explore the bar chart that represents number of crimes for each year. When you click to "Arrested Only" button, you will be able to see statistic for the cases where arrests happened</p>
 </div>
 
 <div class="w3-row-padding">
-  <div style="width:490px; float: left;">
+  <div class="chart-container">
     <div class="w3-container" id="year-chart"></div>
   </div>
   <div>
@@ -40,24 +43,83 @@
   </div>
 </div>
 
+<div class="w3-container" >
+  <p>As you can see, even total number of crimes is not decreased last years, there are definitily decrease for the cases with arrests. It means that there are less heavy crimes from year to year and it is positive trend for sure.</p>
+  <p>If you are interested in details, you can use below chart in order to understand how much of total value particular crime type brings</p>
+</div>
+
+<div class="w3-row-padding">
+  <div class="chart-categories">
+    <div class="w3-container" id="categories-chart"></div>  
+  </div>
+  <div class="select-crime">
+    <label for="crime-type">Select a crime type</label>
+    <select name="crime-type" id="crime-type">
+      <option>ASSAULT</option>
+      <option>BATTERY</option>
+      <option>BURGLARY</option>
+      <option>CONCEALED CARRY LICENSE VIOLATION</option>
+      <option>CRIM SEXUAL ASSAULT</option>
+      <option>CRIMINAL DAMAGE</option>
+      <option>CRIMINAL TRESPASS</option>
+      <option>DECEPTIVE PRACTICE</option>
+      <option>GAMBLING</option>
+      <option>HOMICIDE</option>
+      <option>HUMAN TRAFFICKING</option>
+      <option>INTERFERENCE WITH PUBLIC OFFICER</option>
+      <option>INTIMIDATION</option>
+      <option>KIDNAPPING</option>
+      <option>LIQUOR LAW VIOLATION</option>
+      <option>MOTOR VEHICLE THEFT</option>
+      <option>NARCOTICS</option>
+      <option>NON-CRIMINAL</option>
+      <option>OBSCENITY</option>
+      <option>OFFENSE INVOLVING CHILDREN</option>
+      <option>OTHER NARCOTIC VIOLATION</option>
+      <option>OTHER OFFENSE</option>
+      <option>PROSTITUTION</option>
+      <option>PUBLIC INDECENCY</option>
+      <option>PUBLIC PEACE VIOLATION</option>
+      <option>ROBBERY</option>
+      <option>SEX OFFENSE</option>
+      <option>STALKING</option>
+      <option>THEFT</option>
+      <option>WEAPONS VIOLATION</option>
+    </select>
+  </div>
+</div>
+
 <script>
-  let arrested_only = false;
+  let arrestedOnly = false;
   $(() => {
     $("input").checkboxradio({
       icon: false
     });
     $("#checkbox-arrested").on("click", function() {
-      if (arrested_only) {
-        arrested_only = false;
-        draw(arrested_only=false)
+      if (arrestedOnly) {
+        arrestedOnly = false;
+        drawTotal(arrestedOnly=false)
       } else {
-        arrested_only = true;
-        draw(arrested_only=true)
+        arrestedOnly = true;
+        drawTotal(arrestedOnly=true)
       }
     });
+
+    $("#crime-type").selectmenu();
+    $( "#crime-type" ).selectmenu({
+      change: function( event, ui ) {} });
+
+    $("#crime-type")
+    .selectmenu("menuWidget")
+    .addClass("overflow");
+
+    $( "#crime-type" ).on( "selectmenuchange", function( event, ui ) {
+      drawCategories(ui.item.value);
+    } );
   });
 
-  draw();
+  drawTotal();
+  drawCategories('ASSAULT');
 </script>
 
 <!-- Footer -->
